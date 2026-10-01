@@ -1,0 +1,25 @@
+name: build-wechat
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v0.8.5
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build with WeChat channels
+        run: |
+          cargo build --release -j 2 --no-default-features --features "agent-runtime,gateway,channel-wechat,channel-wecom,channel-wecom-ws"
+      - name: Publish binary
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: wechat-build
+          files: target/release/zeroclaw
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
