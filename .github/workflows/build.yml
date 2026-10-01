@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          repository: zeroclaw-labs/zeroclaw
           ref: v0.8.5
       - uses: dtolnay/rust-toolchain@stable
       - name: Build with WeChat channels
